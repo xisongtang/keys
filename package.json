@@ -1,0 +1,26 @@
+{
+  "name": "keys",
+  "version": "0.0.1",
+  "description": "for managing keys",
+  "main": "index.js",
+  "dependencies": {
+    "react-dom": "^15.4.2",
+    "react": "^15.4.2"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.1.2",
+    "source-map-loader": "^0.2.0",
+    "typescript": "^2.2.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xisongtang/keys.git"
+  },
+  "keywords": [
+    "password"
+  ],
+  "author": "xishuai"
+}
