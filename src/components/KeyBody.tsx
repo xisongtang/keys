@@ -1,4 +1,5 @@
 ﻿import * as React from "react";
+import * as CryptoJS from "crypto-js";
 
 interface KeyBodyProps {
     readonly website?: string;
@@ -29,6 +30,7 @@ export class KeyBody extends React.Component<KeyBodyProps, KeyBodyStates> {
         this.onWebsiteChange = this.onWebsiteChange.bind(this);
         this.onAccountIdChange = this.onAccountIdChange.bind(this);
         this.onHashTypeChange = this.onHashTypeChange.bind(this);
+        this.onGenerateButtonClick = this.onGenerateButtonClick.bind(this);
     }
     render() {
         return <div>
@@ -48,7 +50,7 @@ export class KeyBody extends React.Component<KeyBodyProps, KeyBodyStates> {
             </div>
             <div><span>密钥</span><input type="password" /></div>
             <div><span>生成密码</span><span>{this.state.genPassword}</span></div>
-            <button>生成</button>
+            <button onClick={this.onGenerateButtonClick}>生成</button>
         </div>;
     }
 
@@ -68,5 +70,10 @@ export class KeyBody extends React.Component<KeyBodyProps, KeyBodyStates> {
         this.setState({
             accountId: event.target.value
         })
+    }
+
+    onGenerateButtonClick(event: React.MouseEvent<HTMLButtonElement>) {
+        let result: string = CryptoJS.AES.encrypt(this.state.accountId ? this.state.accountId : '', this.state.password ? this.state.password : '', { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.NoPadding }).ciphertext.toString();
+        console.log(result);
     }
 }
