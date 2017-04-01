@@ -1,9 +1,4 @@
-﻿* {
-    padding:0;
-    margin:0;
-}
-
-#react-body {
+﻿#react-body {
     min-height:400px;
     min-width:600px;
 }
