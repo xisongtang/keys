@@ -1,6 +1,9 @@
 ﻿import * as React from "react";
 import * as CryptoJS from "crypto-js";
 
+import {VisiblePassword} from "./VisiblePassword"
+import {ReplicableVisiblePassword} from "./ReplicableVisiblePassword"
+
 interface KeyBodyProps {
     readonly website?: string;
     readonly accountId?: string;
@@ -36,7 +39,8 @@ export class KeyBody extends React.Component<KeyBodyProps, KeyBodyStates> {
             hashType: props.hashType ? props.hashType : HASH_TYPE[0],
             digitNumber: props.digitNumber ? props.digitNumber : 16,
             password: props.password ? props.password : 'password',
-            passwordVisible: false
+            passwordVisible: false,
+            genPassword:""
         };
         this.onWebsiteChange = this.onWebsiteChange.bind(this);
         this.onAccountIdChange = this.onAccountIdChange.bind(this);
@@ -63,8 +67,9 @@ export class KeyBody extends React.Component<KeyBodyProps, KeyBodyStates> {
                 </select>
             </div>
             <div><span>位数</span><input type="digitNumber" value={this.state.digitNumber} onChange={this.onDigitNumberChange} /></div>
-            <div><span>密钥</span><input type={this.state.passwordVisible ? "text" : "password"} value={this.state.password} onChange={this.onPasswordChange} /><button onClick={this.onToggleVisibleButtonClick}><span className="glyphicons x05 glyphicons-eye-open" aria-hidden="true"></span></button></div>
-            <div><span>生成密码</span><span>{this.state.genPassword}</span></div>
+            <VisiblePassword password={this.state.password} onChange={this.onPasswordChange} title="密钥"/>
+            <ReplicableVisiblePassword editable={false} password={this.state.genPassword} title="生成密码"/>
+            {/*<div><span>生成密码</span><span>{this.state.genPassword}</span></div>*/}
             <input type="button" onClick={this.onGenerateButtonClick} value="生成" />
         </div>;
     }
