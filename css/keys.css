@@ -2,3 +2,13 @@
     min-height:400px;
     min-width:600px;
 }
+
+
+.g-left {
+    width: 200px;
+    float: left;
+}
+
+.g-right {
+    margin-left:200px;
+}
