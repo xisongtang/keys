@@ -25,11 +25,12 @@ export class ReplicableVisiblePassword extends React.Component<Props, State> {
     }
 
     render() {
+        let buttonClassName=!this.state.passwordVisible?"glyphicons x05 glyphicons-eye-open":"glyphicons x05 glyphicons-eye-close"
         return <div>
             <span>{this.props.title}</span>
             <input type={this.state.passwordVisible ? "text" : "password"} value={this.props.password} onChange={this.props.onChange} readOnly={!this.props.editable}
                 ref={(input) => { this.textInput = input; }} />
-            <button onClick={this.onToggleVisibleButtonClick}><span className="glyphicons x05 glyphicons-eye-open" aria-hidden="true"></span></button>
+            <button onClick={this.onToggleVisibleButtonClick}><span className={buttonClassName} aria-hidden="true"></span></button>
             <button onClick={this.onClick} ><span className="glyphicons x05 glyphicons-copy" aria-hidden="true"></span></button>
         </div>
     }
