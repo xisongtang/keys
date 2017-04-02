@@ -4,6 +4,7 @@ import {PasswordData} from "./PasswordData";
 
 interface Props {
     data:PasswordData;
+    selected:boolean;
     onClick(event:React.MouseEvent<HTMLLIElement>):void
 }
 
@@ -17,7 +18,7 @@ export class ListItem extends React.Component<Props, State> {
     }
 
     render() {
-        return <li onClick={this.props.onClick}>
+        return <li onClick={this.props.onClick} className={this.props.selected?"selected":undefined}>
             <div>{this.props.data.website}</div>
             <div>{this.props.data.accountId}</div>
         </li>

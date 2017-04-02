@@ -24,20 +24,20 @@ export class KeyBody extends React.Component<Props, State> implements React.Comp
 
     constructor(props: Props) {
         super(props);
-        this.state = {
+        let state: State = {
             website: props.website,
             accountId: props.accountId,
             hashType: props.hashType ? props.hashType : HASH_TYPE[0],
             digitNumber: props.digitNumber ? props.digitNumber : 16,
-            password: props.password ? props.password : 'password',
-            genPassword: ""
-        };
+            password: props.password ? props.password : 'password'
+        }
+        state.genPassword = this.generatePassword(state);
+        this.state = state;
         this.onWebsiteChange = this.onWebsiteChange.bind(this);
         this.onAccountIdChange = this.onAccountIdChange.bind(this);
         this.onDigitNumberChange = this.onDigitNumberChange.bind(this);
         this.onHashTypeChange = this.onHashTypeChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
-        this.onGenerateButtonClick = this.onGenerateButtonClick.bind(this);
         console.log("constructor");
     }
 
@@ -51,27 +51,35 @@ export class KeyBody extends React.Component<Props, State> implements React.Comp
 
     componentWillReceiveProps(nextProps: Readonly<Props>) {
         console.log("componentWillReceiveProps");
-        this.setState({
+        if (nextProps.website === this.state.website) {
+            return;
+        }
+        let state:State = {
             website: nextProps.website ? nextProps.website : this.state.website,
             accountId: nextProps.accountId ? nextProps.accountId : this.state.accountId,
             hashType: nextProps.hashType ? nextProps.hashType : this.state.hashType,
             digitNumber: nextProps.digitNumber ? nextProps.digitNumber : this.state.digitNumber,
-            password: nextProps.password ? nextProps.password : this.state.password,
-            genPassword: nextProps.genPassword ? nextProps.genPassword : this.state.genPassword
-        })
+            password: nextProps.password ? nextProps.password : this.state.password
+        };
+        if (!nextProps.genPassword) {
+            state.genPassword = this.generatePassword(state);
+        } else {
+            state.genPassword = nextProps.genPassword;
+        }
+        this.setState(state);
     }
 
-    shouldComponentUpdate() {
-        console.log("shouldComponentUpdate");
+    shouldComponentUpdate(nextProps: Readonly<Props>) {
+        console.log("shouldComponentUpdate", this.state.website, nextProps.website);
         return true;
     }
 
-    componentWillUpdate() {
-        console.log("componentWillUpdate");
+    componentWillUpdate(nextProps: Readonly<Props>) {
+        console.log("componentWillUpdate", this.state.website, nextProps.website);
     }
 
-    componentDidUpdate() {
-        console.log("componentDidUpdate");
+    componentDidUpdate(nextProps: Readonly<Props>) {
+        console.log("componentDidUpdate", this.state.website, nextProps.website);
     }
 
     render() {
@@ -94,53 +102,51 @@ export class KeyBody extends React.Component<Props, State> implements React.Comp
             <div><span>位数</span><input type="digitNumber" value={this.state.digitNumber} onChange={this.onDigitNumberChange} /></div>
             <VisiblePassword password={this.state.password} onChange={this.onPasswordChange} title="密钥" />
             <ReplicableVisiblePassword editable={false} password={this.state.genPassword} title="生成密码" />
-            {/*<div><span>生成密码</span><span>{this.state.genPassword}</span></div>*/}
-            <input type="button" onClick={this.onGenerateButtonClick} value="生成" />
         </div>;
     }
 
     onWebsiteChange(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({
-            website: event.target.value
-        });
+        let state: State = Object.assign({}, this.state, { website: event.target.value });
+        state.genPassword = this.generatePassword(state);
+        this.setState(state);
     }
 
     onAccountIdChange(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({
-            accountId: event.target.value
-        })
+        let state: State = Object.assign({}, this.state, { accountId: event.target.value });
+        state.genPassword = this.generatePassword(state);
+        this.setState(state);
     }
 
     onHashTypeChange(event: React.ChangeEvent<HTMLSelectElement>) {
-        this.setState({
-            hashType: event.target.value
-        })
+        let state: State = Object.assign({}, this.state, { hashType: event.target.value });
+        state.genPassword = this.generatePassword(state);
+        this.setState(state);
     }
 
     onDigitNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({
-            digitNumber: ~~event.target.value
-        })
+        let state: State = Object.assign({}, this.state, { digitNumber: event.target.value });
+        state.genPassword = this.generatePassword(state);
+        this.setState(state);
     }
 
     onPasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({
-            password: event.target.value
-        })
+        let state: State = Object.assign({}, this.state, { password: event.target.value });
+        state.genPassword = this.generatePassword(state);
+        this.setState(state);
     }
 
-    onGenerateButtonClick(event: React.MouseEvent<HTMLInputElement>) {
-        let website: string = this.state.website ? this.state.website : '', password: string = this.state.password ? this.state.password : '', accountId: string = this.state.accountId ? this.state.accountId : '';
+    generatePassword(state: PasswordData): string {
+        let website: string = state.website as string, password: string = state.password as string, accountId: string = state.accountId as string, digitNumber = state.digitNumber;
         let salt: string = website + accountId;
         let wordArray: CryptoJS.lib.WordArray = CryptoJS.PBKDF2(password, salt, {
-            keySize: this.state.digitNumber, iterations: 100, hasher: HASHER[this.state.hashType]
+            keySize: digitNumber, iterations: 100, hasher: HASHER[state.hashType as string]
         });
         let result: string = wordArray.words.map((v: number, i: number) => {
-            if (this.state.digitNumber === undefined || i >= this.state.digitNumber) return;
+            if (digitNumber === undefined || i >= digitNumber) return;
             let index: number = v % ALPHABET.length;
             index < 0 && (index += ALPHABET.length);
             return ALPHABET[index];
         }).join('');
-        this.setState({ genPassword: result });
+        return result;
     }
 }
