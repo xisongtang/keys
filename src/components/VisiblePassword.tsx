@@ -22,7 +22,8 @@ export class VisiblePassword extends React.Component<Props, State> {
     }
 
     render() {
-        return <div><span>{this.props.title}</span><input type={this.state.passwordVisible ? "text" : "password"} value={this.props.password} onChange={this.props.onChange} readOnly={this.props.editable}/><button onClick={this.onToggleVisibleButtonClick}><span className="glyphicons x05 glyphicons-eye-open" aria-hidden="true"></span></button></div>
+        let buttonClassName=!this.state.passwordVisible?"glyphicons x05 glyphicons-eye-open":"glyphicons x05 glyphicons-eye-close"
+        return <div><span>{this.props.title}</span><input type={this.state.passwordVisible ? "text" : "password"} value={this.props.password} onChange={this.props.onChange} readOnly={this.props.editable}/><button onClick={this.onToggleVisibleButtonClick}><span className={buttonClassName} aria-hidden="true"></span></button></div>
     }
 
     onToggleVisibleButtonClick(event: React.MouseEvent<HTMLButtonElement>) {

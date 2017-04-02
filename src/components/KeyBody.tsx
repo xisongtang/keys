@@ -87,6 +87,8 @@ export class KeyBody extends React.Component<Props, State> implements React.Comp
         return <div className="g-right">
             <div><span>网站</span><input type="text" value={this.state.website} onChange={this.onWebsiteChange} /></div>
             <div><span>账号</span><input type="text" value={this.state.accountId} onChange={this.onAccountIdChange} /></div>
+            <div><span>位数</span><input type="number" value={this.state.digitNumber} onChange={this.onDigitNumberChange} /></div>
+            <VisiblePassword password={this.state.password} onChange={this.onPasswordChange} title="密钥" />
             <div>
                 <span>hash方式</span>
                 <select value={this.state.hashType} onChange={this.onHashTypeChange}>
@@ -99,8 +101,6 @@ export class KeyBody extends React.Component<Props, State> implements React.Comp
                     }
                 </select>
             </div>
-            <div><span>位数</span><input type="digitNumber" value={this.state.digitNumber} onChange={this.onDigitNumberChange} /></div>
-            <VisiblePassword password={this.state.password} onChange={this.onPasswordChange} title="密钥" />
             <ReplicableVisiblePassword editable={false} password={this.state.genPassword} title="生成密码" />
         </div>;
     }
