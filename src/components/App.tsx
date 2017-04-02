@@ -38,11 +38,12 @@ export class App extends React.Component<Props, State> implements React.Componen
                 {this.state.items.map((data: PasswordData) => {
                     return <ListItem data={data} key={data.website} onClick={
                         (event: React.MouseEvent<HTMLLIElement>) => {
-                            this.setState({
-                                currentItem:data
-                            })
+                            if (this.state.currentItem.website !== data.website)
+                                this.setState({
+                                    currentItem: Object.assign({}, data)
+                                });
                         }
-                    } />
+                    } selected={this.state.currentItem.website === data.website} />
                 })}
             </div>
             <KeyBody website={this.state.currentItem.website} accountId={this.state.currentItem.accountId} />
