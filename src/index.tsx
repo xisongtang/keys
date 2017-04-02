@@ -1,9 +1,9 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { KeyBody } from "./components/KeyBody";
+import { App } from "./components/App";
 
 ReactDOM.render(
-    <KeyBody website="QQ" accountId="313193401@qq.com" />,
+    <App />,
     document.getElementById("react-body")
 );

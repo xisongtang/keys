@@ -1,25 +1,16 @@
 ﻿import * as React from "react";
 import * as CryptoJS from "crypto-js";
 
-import {VisiblePassword} from "./VisiblePassword"
-import {ReplicableVisiblePassword} from "./ReplicableVisiblePassword"
+import { VisiblePassword } from "./VisiblePassword";
+import { ReplicableVisiblePassword } from "./ReplicableVisiblePassword";
+import { PasswordData } from "./PasswordData";
 
-interface KeyBodyProps {
-    readonly website?: string;
-    readonly accountId?: string;
-    readonly password?: string;
-    readonly hashType?: string;
-    readonly digitNumber?: number;
-}
+type Props = PasswordData
 
-interface KeyBodyStates {
-    website?: string;
-    accountId?: string;
+interface State extends PasswordData {
     password: string;
     hashType: string;
     digitNumber: number;
-    genPassword?: string;
-    passwordVisible: boolean;
 }
 
 const HASH_TYPE: ReadonlyArray<string> = ["MD5", "SHA1", "SHA256", "SHA224", "SHA384", "SHA512", "RIPEMD160"];
@@ -29,9 +20,9 @@ const HASHER: Readonly<{ [key: string]: CryptoJS.lib.Hasher; }> = { MD5: CryptoJ
 const ALPHABET: Readonly<string> = "0123456789012345678901234567890123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`~!@#$%^&*()_+-={}|<>,.{}[];:'\"\\";
 
 
-export class KeyBody extends React.Component<KeyBodyProps, KeyBodyStates> {
+export class KeyBody extends React.Component<Props, State> implements React.ComponentLifecycle<Props, State>{
 
-    constructor(props: KeyBodyProps) {
+    constructor(props: Props) {
         super(props);
         this.state = {
             website: props.website,
@@ -39,8 +30,7 @@ export class KeyBody extends React.Component<KeyBodyProps, KeyBodyStates> {
             hashType: props.hashType ? props.hashType : HASH_TYPE[0],
             digitNumber: props.digitNumber ? props.digitNumber : 16,
             password: props.password ? props.password : 'password',
-            passwordVisible: false,
-            genPassword:""
+            genPassword: ""
         };
         this.onWebsiteChange = this.onWebsiteChange.bind(this);
         this.onAccountIdChange = this.onAccountIdChange.bind(this);
@@ -48,10 +38,45 @@ export class KeyBody extends React.Component<KeyBodyProps, KeyBodyStates> {
         this.onHashTypeChange = this.onHashTypeChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onGenerateButtonClick = this.onGenerateButtonClick.bind(this);
-        this.onToggleVisibleButtonClick = this.onToggleVisibleButtonClick.bind(this);
+        console.log("constructor");
     }
+
+    componentWillMount() {
+        console.log("componentWillMount");
+    }
+
+    componentDidMount() {
+        console.log("componentDidMount");
+    }
+
+    componentWillReceiveProps(nextProps: Readonly<Props>) {
+        console.log("componentWillReceiveProps");
+        this.setState({
+            website: nextProps.website ? nextProps.website : this.state.website,
+            accountId: nextProps.accountId ? nextProps.accountId : this.state.accountId,
+            hashType: nextProps.hashType ? nextProps.hashType : this.state.hashType,
+            digitNumber: nextProps.digitNumber ? nextProps.digitNumber : this.state.digitNumber,
+            password: nextProps.password ? nextProps.password : this.state.password,
+            genPassword: nextProps.genPassword ? nextProps.genPassword : this.state.genPassword
+        })
+    }
+
+    shouldComponentUpdate() {
+        console.log("shouldComponentUpdate");
+        return true;
+    }
+
+    componentWillUpdate() {
+        console.log("componentWillUpdate");
+    }
+
+    componentDidUpdate() {
+        console.log("componentDidUpdate");
+    }
+
     render() {
-        return <div>
+        console.log("Render");
+        return <div className="g-right">
             <div><span>网站</span><input type="text" value={this.state.website} onChange={this.onWebsiteChange} /></div>
             <div><span>账号</span><input type="text" value={this.state.accountId} onChange={this.onAccountIdChange} /></div>
             <div>
@@ -67,8 +92,8 @@ export class KeyBody extends React.Component<KeyBodyProps, KeyBodyStates> {
                 </select>
             </div>
             <div><span>位数</span><input type="digitNumber" value={this.state.digitNumber} onChange={this.onDigitNumberChange} /></div>
-            <VisiblePassword password={this.state.password} onChange={this.onPasswordChange} title="密钥"/>
-            <ReplicableVisiblePassword editable={false} password={this.state.genPassword} title="生成密码"/>
+            <VisiblePassword password={this.state.password} onChange={this.onPasswordChange} title="密钥" />
+            <ReplicableVisiblePassword editable={false} password={this.state.genPassword} title="生成密码" />
             {/*<div><span>生成密码</span><span>{this.state.genPassword}</span></div>*/}
             <input type="button" onClick={this.onGenerateButtonClick} value="生成" />
         </div>;
@@ -101,12 +126,6 @@ export class KeyBody extends React.Component<KeyBodyProps, KeyBodyStates> {
     onPasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({
             password: event.target.value
-        })
-    }
-
-    onToggleVisibleButtonClick(event: React.MouseEvent<HTMLButtonElement>) {
-        this.setState((prevState: KeyBodyStates) => {
-            return { passwordVisible: !prevState.passwordVisible };
         })
     }
 
