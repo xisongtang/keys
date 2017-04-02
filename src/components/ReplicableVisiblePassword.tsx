@@ -25,13 +25,23 @@ export class ReplicableVisiblePassword extends React.Component<Props, State> {
     }
 
     render() {
-        let buttonClassName=!this.state.passwordVisible?"glyphicons x05 glyphicons-eye-open":"glyphicons x05 glyphicons-eye-close"
-        return <div>
-            <span>{this.props.title}</span>
-            <input type={this.state.passwordVisible ? "text" : "password"} value={this.props.password} onChange={this.props.onChange} readOnly={!this.props.editable}
-                ref={(input) => { this.textInput = input; }} />
-            <button onClick={this.onToggleVisibleButtonClick}><span className={buttonClassName} aria-hidden="true"></span></button>
-            <button onClick={this.onClick} ><span className="glyphicons x05 glyphicons-copy" aria-hidden="true"></span></button>
+        let buttonClassName = !this.state.passwordVisible ? "glyphicons glyphicons-eye-open" : "glyphicons glyphicons-eye-close"
+        return <div className="form-group">
+            <label>{this.props.title}</label>
+            <div className="input-group">
+                <input type={this.state.passwordVisible ? "text" : "password"} value={this.props.password} onChange={this.props.onChange} readOnly={!this.props.editable}
+                    ref={(input) => { this.textInput = input; }} className="form-control" />
+                <span className="input-group-btn">
+                    <button type="button" onClick={this.onClick} className="btn btn-blue btn-sm" >
+                        <span className="glyphicons glyphicons-copy" aria-hidden="true" />
+                    </button>
+                </span>
+                <span className="input-group-btn">
+                    <button type="button" onClick={this.onToggleVisibleButtonClick} className="btn btn-default btn-sm">
+                        <span className={buttonClassName} aria-hidden="true" />
+                    </button>
+                </span>
+            </div>
         </div>
     }
 

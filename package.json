@@ -2,7 +2,7 @@
   "name": "keys",
   "version": "0.0.1",
   "description": "for managing keys",
-  "main": "index.js",
+  "main": "index.html",
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/cryptojs": "^3.1.29",

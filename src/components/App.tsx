@@ -33,11 +33,15 @@ export class App extends React.Component<Props, State> implements React.Componen
     }
 
     render() {
-        return <div>
-            <div className="g-left">
+        return <div className="row">
+            <div className="col-xs-7 col-sm-9 g-left">
+                <KeyBody website={this.state.currentItem.website} accountId={this.state.currentItem.accountId} />
+            </div>
+            <div className="col-xs-5 col-sm-3 g-right">
+                <div className="list-group">
                 {this.state.items.map((data: PasswordData) => {
                     return <ListItem data={data} key={data.website} onClick={
-                        (event: React.MouseEvent<HTMLLIElement>) => {
+                        (event: React.MouseEvent<HTMLAnchorElement>) => {
                             if (this.state.currentItem.website !== data.website)
                                 this.setState({
                                     currentItem: Object.assign({}, data)
@@ -45,8 +49,8 @@ export class App extends React.Component<Props, State> implements React.Componen
                         }
                     } selected={this.state.currentItem.website === data.website} />
                 })}
+                </div>
             </div>
-            <KeyBody website={this.state.currentItem.website} accountId={this.state.currentItem.accountId} />
         </div>
     }
 }

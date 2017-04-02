@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import {PasswordData} from "./PasswordData";
+import { PasswordData } from "./PasswordData";
 
 interface Props {
-    data:PasswordData;
-    selected:boolean;
-    onClick(event:React.MouseEvent<HTMLLIElement>):void
+    data: PasswordData;
+    selected: boolean;
+    onClick(event: React.MouseEvent<HTMLAnchorElement>): void
 }
 
 interface State {
@@ -13,14 +13,16 @@ interface State {
 }
 
 export class ListItem extends React.Component<Props, State> {
-    constructor(props:Readonly<Props>) {
+    constructor(props: Readonly<Props>) {
         super(props);
     }
 
     render() {
-        return <li onClick={this.props.onClick} className={this.props.selected?"selected":undefined}>
-            <div>{this.props.data.website}</div>
-            <div>{this.props.data.accountId}</div>
-        </li>
+        let className = "list-group-item ";;
+        className += this.props.selected ? "active" : "";
+        return <a href="#" onClick={this.props.onClick} className={className}>
+            <h4 className="list-group-item-heading">{this.props.data.website}</h4>
+            <p className="list-group-item-text">{this.props.data.accountId}</p>
+        </a>
     }
 }
