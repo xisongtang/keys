@@ -1,14 +1,90 @@
-﻿#react-body {
-    min-height:400px;
-    min-width:600px;
-}
-
-
-.g-left {
-    width: 200px;
-    float: left;
+﻿.g-left {
+    padding-top:100px;
+    padding-bottom:150px;
+    border-right:1px solid #ddd;
 }
 
 .g-right {
-    margin-left:200px;
+    padding-top: 100px;
+}
+
+.g-footer {
+    background-color: #2a2730;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    color: #99979c;
+}
+
+@media (max-width: 768px) {
+    .g-left {
+        padding-top:20px;
+        padding-bottom:20px;
+    }
+    .g-right {
+        padding-top:20px;
+    }
+
+    .g-footer {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+.g-header {
+    padding-bottom: 9px;
+    background-color: #01579B;
+    border-bottom:1px solid #ddd;
+    color:#fff;
+}
+
+.g-header small {
+    color :#ccc;
+}
+
+.g-footer a{
+    color:#fff;
+}
+
+.list-group-item.active, .list-group-item.active:focus {
+    background-color: #039BE5;
+    border-color: #039BE5
+}
+
+.list-group-item.active:hover{
+    background-color: #0288D1;
+    border-color: #0277BD
+}
+
+.list-group-item-heading, .list-group-item-text {
+    overflow-wrap: break-word;
+}
+
+.btn-blue {
+    background-color: #039BE5;
+    border-color: #0288D1;
+    color: #fff;
+}
+
+.btn-blue:hover {
+    background-color: #0288D1;
+    border-color: #0277BD;
+    color: #fff;
+}
+
+.btn-sm {
+    padding:4px 10px;
+}
+
+.input-group-btn:nth-last-child(2)>.btn {
+    margin-left: -1px;
+    z-index:1;
+    border-radius: 0px;
+}
+
+.form-control[readonly] {
+    cursor: not-allowed;
+}
+
+hr {
+    border-color: #ddd
 }

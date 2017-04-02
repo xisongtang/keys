@@ -54,7 +54,7 @@ export class KeyBody extends React.Component<Props, State> implements React.Comp
         if (nextProps.website === this.state.website) {
             return;
         }
-        let state:State = {
+        let state: State = {
             website: nextProps.website ? nextProps.website : this.state.website,
             accountId: nextProps.accountId ? nextProps.accountId : this.state.accountId,
             hashType: nextProps.hashType ? nextProps.hashType : this.state.hashType,
@@ -84,24 +84,36 @@ export class KeyBody extends React.Component<Props, State> implements React.Comp
 
     render() {
         console.log("Render");
-        return <div className="g-right">
-            <div><span>网站</span><input type="text" value={this.state.website} onChange={this.onWebsiteChange} /></div>
-            <div><span>账号</span><input type="text" value={this.state.accountId} onChange={this.onAccountIdChange} /></div>
-            <div><span>位数</span><input type="number" value={this.state.digitNumber} onChange={this.onDigitNumberChange} /></div>
-            <VisiblePassword password={this.state.password} onChange={this.onPasswordChange} title="密钥" />
-            <div>
-                <span>hash方式</span>
-                <select value={this.state.hashType} onChange={this.onHashTypeChange}>
-                    {
-                        HASH_TYPE.map((type) => {
-                            return <option key={type} value={type}>
-                                {type.toLocaleUpperCase()}
-                            </option>
-                        })
-                    }
-                </select>
+        return <div className="row">
+            <div className="col-sx-12 col-sm-9 col-md-6 col-sm-offset-2 col-md-offset-3">
+                <div className="form-group">
+                    <label>网站</label>
+                    <input type="text" className="form-control" value={this.state.website} onChange={this.onWebsiteChange} />
+                </div>
+                <div className="form-group">
+                    <label>账号</label>
+                    <input type="text" className="form-control" value={this.state.accountId} onChange={this.onAccountIdChange} />
+                </div>
+                <div className="form-group">
+                    <label>位数</label>
+                    <input type="number" className="form-control" value={this.state.digitNumber} onChange={this.onDigitNumberChange} />
+                </div>
+                <div className="form-group">
+                    <label>Hash</label>
+                    <select className="form-control" value={this.state.hashType} onChange={this.onHashTypeChange}>
+                        {
+                            HASH_TYPE.map((type) => {
+                                return <option key={type} value={type}>
+                                    {type.toLocaleUpperCase()}
+                                </option>
+                            })
+                        }
+                    </select>
+                </div>
+                <VisiblePassword password={this.state.password} onChange={this.onPasswordChange} title="密钥" />
+                <hr />
+                <ReplicableVisiblePassword editable={false} password={this.state.genPassword} title="生成密码" />
             </div>
-            <ReplicableVisiblePassword editable={false} password={this.state.genPassword} title="生成密码" />
         </div>;
     }
 

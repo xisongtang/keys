@@ -2,7 +2,7 @@ import * as React from "react";
 
 interface Props {
     password: string;
-    title?:string;
+    title?: string;
     editable?: boolean;
     onChange?(event: React.ChangeEvent<HTMLInputElement>): void;
 }
@@ -22,8 +22,18 @@ export class VisiblePassword extends React.Component<Props, State> {
     }
 
     render() {
-        let buttonClassName=!this.state.passwordVisible?"glyphicons x05 glyphicons-eye-open":"glyphicons x05 glyphicons-eye-close"
-        return <div><span>{this.props.title}</span><input type={this.state.passwordVisible ? "text" : "password"} value={this.props.password} onChange={this.props.onChange} readOnly={this.props.editable}/><button onClick={this.onToggleVisibleButtonClick}><span className={buttonClassName} aria-hidden="true"></span></button></div>
+        let buttonClassName = !this.state.passwordVisible ? "glyphicons glyphicons-eye-open" : "glyphicons glyphicons-eye-close"
+        return <div className="form-group">
+            <label>{this.props.title}</label>
+            <div className="input-group">
+                <input type={this.state.passwordVisible ? "text" : "password"} className="form-control" value={this.props.password} onChange={this.props.onChange} readOnly={this.props.editable} />
+                <span className="input-group-btn">
+                    <button type="button" onClick={this.onToggleVisibleButtonClick} className="btn btn-default btn-sm">
+                        <span className={buttonClassName} aria-hidden="true" />
+                    </button>
+                </span>
+            </div>
+        </div>
     }
 
     onToggleVisibleButtonClick(event: React.MouseEvent<HTMLButtonElement>) {
