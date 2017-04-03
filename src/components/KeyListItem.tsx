@@ -12,13 +12,13 @@ interface State {
 
 }
 
-export class ListItem extends React.Component<Props, State> {
+export class KeyListItem extends React.Component<Props, State> {
     constructor(props: Readonly<Props>) {
         super(props);
     }
 
     render() {
-        let className = "list-group-item ";;
+        let className = "list-group-item text-overflow ";
         className += this.props.selected ? "active" : "";
         return <a href="#" onClick={this.props.onClick} className={className}>
             <h4 className="list-group-item-heading">{this.props.data.website}</h4>
