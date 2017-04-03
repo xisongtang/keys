@@ -55,8 +55,18 @@
     border-color: #0277BD
 }
 
-.list-group-item-heading, .list-group-item-text {
-    overflow-wrap: break-word;
+.list-group-item.adding-item {
+    text-align: center;
+    font-size: 24px;
+    color:#aaa;
+    /*padding-top: 18px;
+    padding-bottom: 18px;*/
+}
+
+.text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .btn-blue {

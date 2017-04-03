@@ -1,10 +1,9 @@
 import * as React from "react";
-import * as Axios from "axios";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
-import { KeyBody } from "./KeyBody";
-import { ListItem } from "./ListItem";
 import { PasswordData } from "./PasswordData";
+import { KeyBody } from "./KeyBody";
+import { KeyListItem } from "./KeyListItem";
 
 interface Props {
 
@@ -13,6 +12,7 @@ interface Props {
 interface State {
     items: PasswordData[];
     currentItem: PasswordData;
+    isAdding: boolean;
 }
 
 export class App extends React.Component<Props, State> implements React.ComponentLifecycle<Props, State>{
@@ -20,37 +20,50 @@ export class App extends React.Component<Props, State> implements React.Componen
         super(props);
         this.state = {
             items: [],
-            currentItem: {
-                website: "qq.com",
-                accountId: "313193401@qq.com"
-            }
+            currentItem: new PasswordData,
+            isAdding: false
         };
         axios.get("/data.json").then(
-            (response: Axios.AxiosResponse) => {
-                this.setState({ items: response.data.data })
+            (response: AxiosResponse) => {
+                let items: PasswordData[] = response.data.data.map((value: PasswordData) => {
+                    return PasswordData.create(value);
+                });
+                this.setState({
+                    items: items,
+                    currentItem: items[0]
+                });
             }
         );
+
+        this.onAddButtonClick = this.onAddButtonClick.bind(this);
     }
 
     render() {
         return <div className="row">
             <div className="col-xs-7 col-sm-9 g-left">
-                <KeyBody website={this.state.currentItem.website} accountId={this.state.currentItem.accountId} />
+                <KeyBody item={this.state.currentItem} />
             </div>
             <div className="col-xs-5 col-sm-3 g-right">
                 <div className="list-group">
-                {this.state.items.map((data: PasswordData) => {
-                    return <ListItem data={data} key={data.website} onClick={
-                        (event: React.MouseEvent<HTMLAnchorElement>) => {
-                            if (this.state.currentItem.website !== data.website)
-                                this.setState({
-                                    currentItem: Object.assign({}, data)
-                                });
-                        }
-                    } selected={this.state.currentItem.website === data.website} />
-                })}
+                    {this.state.items.map((data: PasswordData) => {
+                        return <KeyListItem data={data} key={data.website} onClick={
+                            (event: React.MouseEvent<HTMLAnchorElement>) => {
+                                if (this.state.currentItem.website !== data.website)
+                                    this.setState({
+                                        currentItem: PasswordData.create(data)
+                                    });
+                            }
+                        } selected={this.state.currentItem.website === data.website} />
+                    })}
+                    <a href="#" onClick={this.onAddButtonClick} className="list-group-item adding-item">
+                        <span className="glyphicons glyphicons-plus"></span>
+                    </a>
                 </div>
             </div>
         </div>
+    }
+
+    onAddButtonClick(event: React.MouseEvent<HTMLAnchorElement>) {
+
     }
 }
