@@ -23,7 +23,7 @@ export class App extends React.Component<Props, State> implements React.Componen
             currentItem: new PasswordData,
             isAdding: false
         };
-        axios.get("/data.json").then(
+        axios.get("./data.json").then(
             (response: AxiosResponse) => {
                 let items: PasswordData[] = response.data.data.map((value: PasswordData) => {
                     return PasswordData.create(value);
