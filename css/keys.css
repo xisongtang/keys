@@ -58,9 +58,6 @@
 .list-group-item.adding-item {
     text-align: center;
     font-size: 24px;
-    color:#aaa;
-    /*padding-top: 18px;
-    padding-bottom: 18px;*/
 }
 
 .text-overflow {
@@ -73,6 +70,10 @@
     background-color: #039BE5;
     border-color: #0288D1;
     color: #fff;
+}
+
+.btn-save {
+    margin: 20px auto 0 auto;
 }
 
 .btn-blue:hover {

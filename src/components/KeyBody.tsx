@@ -5,7 +5,8 @@ import { ReplicableVisiblePassword } from "./ReplicableVisiblePassword";
 import { PasswordData } from "./PasswordData";
 
 interface Props {
-    item:PasswordData;
+    item: PasswordData;
+    onSave(data: PasswordData): void;
 };
 
 type State = PasswordData;
@@ -22,6 +23,7 @@ export class KeyBody extends React.Component<Props, State> implements React.Comp
         this.onDigitNumberChange = this.onDigitNumberChange.bind(this);
         this.onHashTypeChange = this.onHashTypeChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
         console.log("constructor", this.state);
     }
 
@@ -75,7 +77,7 @@ export class KeyBody extends React.Component<Props, State> implements React.Comp
                     <label>Hash</label>
                     <select className="form-control" value={this.state.hashType} onChange={this.onHashTypeChange}>
                         {
-                            PasswordData.HASH_TYPE.map((type:string) => {
+                            PasswordData.HASH_TYPE.map((type: string) => {
                                 return <option key={type} value={type}>
                                     {type.toLocaleUpperCase()}
                                 </option>
@@ -86,37 +88,44 @@ export class KeyBody extends React.Component<Props, State> implements React.Comp
                 <VisiblePassword password={this.state.password} onChange={this.onPasswordChange} title="密钥" />
                 <hr />
                 <ReplicableVisiblePassword editable={false} password={this.state.genPassword} title="生成密码" />
+                <div>
+                    <button type="button" className="btn btn-default btn-lg center-block" onClick={this.onSaveButtonClick}>保存</button>
+                </div>
             </div>
         </div>;
     }
 
     onWebsiteChange(event: React.ChangeEvent<HTMLInputElement>) {
-        let state: State = PasswordData.create(this.props.item);
+        let state: State = PasswordData.create(this.state);
         state.setWebsite(event.target.value);
         this.setState(state);
     }
 
     onAccountIdChange(event: React.ChangeEvent<HTMLInputElement>) {
-        let state: State = PasswordData.create(this.props.item);
+        let state: State = PasswordData.create(this.state);
         state.setAccountId(event.target.value);
         this.setState(state);
     }
 
     onHashTypeChange(event: React.ChangeEvent<HTMLSelectElement>) {
-        let state: State = PasswordData.create(this.props.item);
+        let state: State = PasswordData.create(this.state);
         state.setHashType(event.target.value);
         this.setState(state);
     }
 
     onDigitNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
-        let state: State = PasswordData.create(this.props.item);
+        let state: State = PasswordData.create(this.state);
         state.setDigitNumber(~~event.target.value);
         this.setState(state);
     }
 
     onPasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
-        let state: State = PasswordData.create(this.props.item);
+        let state: State = PasswordData.create(this.state);
         state.setPassword(event.target.value);
         this.setState(state);
+    }
+    
+    onSaveButtonClick(event: React.MouseEvent<HTMLButtonElement>) {
+        this.props.onSave(PasswordData.create(this.state));
     }
 }

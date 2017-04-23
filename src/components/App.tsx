@@ -36,12 +36,15 @@ export class App extends React.Component<Props, State> implements React.Componen
         );
 
         this.onAddButtonClick = this.onAddButtonClick.bind(this);
+        this.onSave = this.onSave.bind(this);
     }
 
     render() {
+        let addingButtonClassName: string = "list-group-item adding-item ";
+        if (this.state.isAdding) addingButtonClassName += "active";
         return <div className="row">
             <div className="col-xs-7 col-sm-9 g-left">
-                <KeyBody item={this.state.currentItem} />
+                <KeyBody item={this.state.currentItem} onSave={this.onSave} />
             </div>
             <div className="col-xs-5 col-sm-3 g-right">
                 <div className="list-group">
@@ -50,12 +53,13 @@ export class App extends React.Component<Props, State> implements React.Componen
                             (event: React.MouseEvent<HTMLAnchorElement>) => {
                                 if (this.state.currentItem.website !== data.website)
                                     this.setState({
-                                        currentItem: PasswordData.create(data)
+                                        currentItem: PasswordData.create(data),
+                                        isAdding: false
                                     });
                             }
                         } selected={this.state.currentItem.website === data.website} />
                     })}
-                    <a href="#" onClick={this.onAddButtonClick} className="list-group-item adding-item">
+                    <a href="#" onClick={this.onAddButtonClick} className={addingButtonClassName}>
                         <span className="glyphicons glyphicons-plus"></span>
                     </a>
                 </div>
@@ -64,6 +68,30 @@ export class App extends React.Component<Props, State> implements React.Componen
     }
 
     onAddButtonClick(event: React.MouseEvent<HTMLAnchorElement>) {
+        this.setState({
+            currentItem: new PasswordData,
+            isAdding: true
+        });
+    }
 
+    onSave(data: PasswordData) {
+        let items: PasswordData[] = [];
+        if (this.state.isAdding) {
+            items = this.state.items.slice();
+            items.push(data);
+        } else {
+            for (let d of this.state.items) {
+                if (d.website !== data.website) {
+                    items.push(d);
+                } else {
+                    items.push(data);
+                }
+            }
+        }
+        this.setState({
+            isAdding: false,
+            currentItem: data,
+            items: items
+        });
     }
 }
